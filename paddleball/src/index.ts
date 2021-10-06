@@ -13,17 +13,41 @@ type Rectangle = (
   fillColor: string
 ) => void;
 
+// START
 global.onload = function () {
-  // Game stats
+  // Ball position and speed
   let ballX = 75; // X-AXIS
   let ballY = 75; // Y-AXIS
   let ballSpeedX = 5; // X-AXIS SPEED
   let ballSpeedY = 7; // Y-AXIS SPEED
 
+  // Paddle
+  const PADDLE_WIDTH = 100;
+  const PADDLE_THICKNESS = 10;
+  let paddleX = 400;
+
   // Game setup
   const canvas = document.getElementById("gameCanvas") as HTMLCanvasElement;
   const context = canvas.getContext("2d") as CanvasRenderingContext2D;
 
+  // MOUSE EVENTS
+  const updateMousePos = (e: MouseEvent): void => {
+    let rect = canvas.getBoundingClientRect();
+    let root = document.documentElement;
+
+    let mouseX = e.clientX - rect.left - root.scrollLeft;
+    // let mouseY = e.clientY - rect.top - root.scrollTop;
+
+    paddleX = mouseX - PADDLE_WIDTH / 2;
+  };
+
+  // BALL RESET
+  const ballReset = () => {
+    ballX = canvas.width / 2;
+    ballY = canvas.height / 2;
+  };
+
+  // Movement logic
   function moveAll() {
     ballX += ballSpeedX;
     ballY += ballSpeedY;
@@ -37,6 +61,7 @@ global.onload = function () {
 
     // BALL Y-AXIS BORDERS
     if (ballY > canvas.height) {
+      ballReset();
       ballSpeedY *= -1;
     } else if (ballY < 0) {
       ballSpeedY *= -1;
@@ -66,7 +91,14 @@ global.onload = function () {
   // DRAW
   const draw = (): void => {
     rectangle(0, 0, canvas.width, canvas.height, "black");
-    circle(ballX, ballY, 10, "red");
+    circle(ballX, ballY, 10, "white");
+    rectangle(
+      paddleX,
+      canvas.height - PADDLE_THICKNESS,
+      PADDLE_WIDTH,
+      PADDLE_THICKNESS,
+      "white"
+    );
   };
 
   // UPDATE
@@ -78,4 +110,7 @@ global.onload = function () {
   // Frames per second
   const framesPerSecond = 30;
   setInterval(update, 1000 / framesPerSecond);
+
+  // CONTROLS
+  canvas.addEventListener("mousemove", updateMousePos);
 };
