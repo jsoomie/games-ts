@@ -1,16 +1,27 @@
-window.onload = function () {
+global.onload = function () {
+  // Game stats
+  let ballX = 75;
+
+  // Game setup
   const canvas = document.getElementById("gameCanvas") as HTMLCanvasElement;
-  const canvasContext = canvas.getContext("2d");
+  const context = canvas.getContext("2d") as CanvasRenderingContext2D;
 
-  if (canvasContext) {
-    canvasContext.fillStyle = "black";
-    canvasContext.fillRect(0, 0, canvas.width, canvas.height);
+  // Updates page @ 30 frames a second
+  const updateAll = () => {
+    ballX += 5;
+    console.log(ballX);
 
-    canvasContext.fillStyle = "white";
-    canvasContext.beginPath();
-    canvasContext.arc(100, 100, 10, 0, Math.PI * 2, true);
-    canvasContext.fill();
-  } else {
-    console.log("error creating canvas and its contexts");
-  }
+    // Board
+    context.fillStyle = "black";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Ball
+    context.fillStyle = "white";
+    context.beginPath();
+    context.arc(ballX, 100, 10, 0, Math.PI * 2, true);
+    context.fill();
+  };
+
+  const framesPerSecond = 30;
+  setInterval(updateAll, 1000 / framesPerSecond);
 };

@@ -4,13 +4,11 @@
   "main": "index.js",
   "author": "<jsoomie@gmail.com>",
   "license": "MIT",
-  "dependencies": {
-    "concurrently": "^6.3.0",
-    "nodemon": "^2.0.13"
+  "dependencies": {},
+  "devDependencies": {
+    "parcel": "^2.0.0-rc.0"
   },
   "scripts": {
-    "start:build": "tsc -w",
-    "start:run": "nodemon dist/index.js",
-    "start": "concurrently yarn:start:*"
+    "start": "yarn parcel index.html"
   }
 }
