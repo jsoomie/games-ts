@@ -1,3 +1,18 @@
+type Circle = (
+  centerX: number,
+  centerY: number,
+  radius: number,
+  fillColor: string
+) => void;
+
+type Rectangle = (
+  topLeftX: number,
+  topLeftY: number,
+  boxWidth: number,
+  boxHeight: number,
+  fillColor: string
+) => void;
+
 global.onload = function () {
   // Game stats
   let ballX = 75; // X-AXIS
@@ -9,8 +24,7 @@ global.onload = function () {
   const canvas = document.getElementById("gameCanvas") as HTMLCanvasElement;
   const context = canvas.getContext("2d") as CanvasRenderingContext2D;
 
-  // Updates page @ 30 frames a second
-  const updateAll = () => {
+  function moveAll() {
     ballX += ballSpeedX;
     ballY += ballSpeedY;
 
@@ -27,18 +41,41 @@ global.onload = function () {
     } else if (ballY < 0) {
       ballSpeedY *= -1;
     }
+  }
 
-    // Board
-    context.fillStyle = "black";
-    context.fillRect(0, 0, canvas.width, canvas.height);
+  // Create rectangles
+  const rectangle: Rectangle = (
+    topLeftX,
+    topLeftY,
+    boxWidth,
+    boxHeight,
+    fillColor
+  ): void => {
+    context.fillStyle = fillColor;
+    context.fillRect(topLeftX, topLeftY, boxWidth, boxHeight);
+  };
 
-    // Ball
-    context.fillStyle = "white";
+  // Create circle
+  const circle: Circle = (centerX, centerY, radius, fillColor): void => {
+    context.fillStyle = fillColor;
     context.beginPath();
-    context.arc(ballX, ballY, 10, 0, Math.PI * 2, true);
+    context.arc(centerX, centerY, radius, 0, Math.PI * 2, true);
     context.fill();
   };
 
+  // DRAW
+  const draw = (): void => {
+    rectangle(0, 0, canvas.width, canvas.height, "black");
+    circle(ballX, ballY, 10, "red");
+  };
+
+  // UPDATE
+  const update = (): void => {
+    moveAll();
+    draw();
+  };
+
+  // Frames per second
   const framesPerSecond = 30;
-  setInterval(updateAll, 1000 / framesPerSecond);
+  setInterval(update, 1000 / framesPerSecond);
 };
