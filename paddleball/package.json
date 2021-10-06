@@ -1,0 +1,16 @@
+{
+  "name": "paddleball",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "<jsoomie@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "concurrently": "^6.3.0",
+    "nodemon": "^2.0.13"
+  },
+  "scripts": {
+    "start:build": "tsc -w",
+    "start:run": "nodemon dist/index.js",
+    "start": "concurrently yarn:start:*"
+  }
+}
