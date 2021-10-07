@@ -1,17 +1,4 @@
-type Circle = (
-  centerX: number,
-  centerY: number,
-  radius: number,
-  fillColor: string
-) => void;
-
-type Rectangle = (
-  topLeftX: number,
-  topLeftY: number,
-  boxWidth: number,
-  boxHeight: number,
-  fillColor: string
-) => void;
+import { rectangle, circle, colorText } from "./actions";
 
 // START
 global.onload = function () {
@@ -27,17 +14,21 @@ global.onload = function () {
   const PADDLE_DIST_FROM_EDGE = 60;
   let paddleX = 400;
 
+  // Mouse positions
+  let mouseX: number;
+  let mouseY: number;
+
   // Game setup
   const canvas = document.getElementById("gameCanvas") as HTMLCanvasElement;
-  const context = canvas.getContext("2d") as CanvasRenderingContext2D;
+  // const context = canvas.getContext("2d") as CanvasRenderingContext2D;
 
   // MOUSE EVENTS
   const updateMousePos = (e: MouseEvent): void => {
     let rect = canvas.getBoundingClientRect();
     let root = document.documentElement;
 
-    let mouseX = e.clientX - rect.left - root.scrollLeft;
-    // let mouseY = e.clientY - rect.top - root.scrollTop;
+    mouseX = e.clientX - rect.left - root.scrollLeft;
+    mouseY = e.clientY - rect.top - root.scrollTop;
 
     paddleX = mouseX - PADDLE_WIDTH / 2;
   };
@@ -86,26 +77,6 @@ global.onload = function () {
     }
   }
 
-  // Create rectangles
-  const rectangle: Rectangle = (
-    topLeftX,
-    topLeftY,
-    boxWidth,
-    boxHeight,
-    fillColor
-  ): void => {
-    context.fillStyle = fillColor;
-    context.fillRect(topLeftX, topLeftY, boxWidth, boxHeight);
-  };
-
-  // Create circle
-  const circle: Circle = (centerX, centerY, radius, fillColor): void => {
-    context.fillStyle = fillColor;
-    context.beginPath();
-    context.arc(centerX, centerY, radius, 0, Math.PI * 2, true);
-    context.fill();
-  };
-
   // DRAW
   const draw = (): void => {
     rectangle(0, 0, canvas.width, canvas.height, "black");
@@ -117,6 +88,8 @@ global.onload = function () {
       PADDLE_THICKNESS,
       "white"
     );
+
+    colorText(`${mouseX}, ${mouseY}`, mouseX + 10, mouseY, "yellow");
   };
 
   // UPDATE
