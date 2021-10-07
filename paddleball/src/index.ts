@@ -80,6 +80,9 @@ global.onload = function () {
       ballX < paddleRightEdgeX // left of the right side of paddle
     ) {
       ballSpeedY *= -1;
+      const centerOfPaddleX = paddleX + PADDLE_WIDTH / 2;
+      const ballDistFromPaddleCenterX = ballX - centerOfPaddleX;
+      ballSpeedX = ballDistFromPaddleCenterX * 0.35;
     }
   }
 
