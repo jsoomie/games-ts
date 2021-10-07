@@ -24,6 +24,7 @@ global.onload = function () {
   // Paddle
   const PADDLE_WIDTH = 100;
   const PADDLE_THICKNESS = 10;
+  const PADDLE_DIST_FROM_EDGE = 60;
   let paddleX = 400;
 
   // Game setup
@@ -66,6 +67,19 @@ global.onload = function () {
     } else if (ballY < 0) {
       ballSpeedY *= -1;
     }
+
+    const paddleTopEdgeY = canvas.height - PADDLE_DIST_FROM_EDGE;
+    const paddleBottomEdgeY = paddleTopEdgeY + PADDLE_THICKNESS;
+    const paddleLeftEdgeX = paddleX;
+    const paddleRightEdgeX = paddleLeftEdgeX + PADDLE_WIDTH;
+    if (
+      ballY > paddleTopEdgeY && // below the top of padd
+      ballY < paddleBottomEdgeY && // above botom of paddle
+      ballX > paddleLeftEdgeX && // right of the left side of paddle
+      ballX < paddleRightEdgeX // left of the right side of paddle
+    ) {
+      ballSpeedY *= -1;
+    }
   }
 
   // Create rectangles
@@ -94,7 +108,7 @@ global.onload = function () {
     circle(ballX, ballY, 10, "white");
     rectangle(
       paddleX,
-      canvas.height - PADDLE_THICKNESS,
+      canvas.height - PADDLE_DIST_FROM_EDGE,
       PADDLE_WIDTH,
       PADDLE_THICKNESS,
       "white"
