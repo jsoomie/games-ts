@@ -1,4 +1,4 @@
-import { rectangle, circle, colorText } from "./actions";
+import { rectangle, circle, colorText, bricks, brickReset } from "./actions";
 
 // START
 global.onload = function () {
@@ -7,6 +7,14 @@ global.onload = function () {
   let ballY = 75; // Y-AXIS
   let ballSpeedX = 5; // X-AXIS SPEED
   let ballSpeedY = 7; // Y-AXIS SPEED
+
+  // BRICKS
+  const BRICK_W = 100;
+  const BRICK_H = 50;
+  const BRICK_COLS = 8;
+  const BRICK_ROWS = 5;
+  const BRICK_GAP = 2;
+  const brickGrid = new Array(BRICK_COLS);
 
   // Paddle
   const PADDLE_WIDTH = 100;
@@ -21,6 +29,9 @@ global.onload = function () {
   // Game setup
   const canvas = document.getElementById("gameCanvas") as HTMLCanvasElement;
   // const context = canvas.getContext("2d") as CanvasRenderingContext2D;
+
+  // Reset bricks
+  brickReset(brickGrid);
 
   // MOUSE EVENTS
   const updateMousePos = (e: MouseEvent): void => {
@@ -80,6 +91,7 @@ global.onload = function () {
   // DRAW
   const draw = (): void => {
     rectangle(0, 0, canvas.width, canvas.height, "black");
+    bricks(BRICK_GAP, BRICK_W, BRICK_H, "blue", brickGrid, BRICK_ROWS);
     circle(ballX, ballY, 10, "white");
     rectangle(
       paddleX,
@@ -89,7 +101,15 @@ global.onload = function () {
       "white"
     );
 
-    colorText(`${mouseX}, ${mouseY}`, mouseX + 10, mouseY, "yellow");
+    const mouseBrickCol = mouseX / BRICK_W;
+    const mouseBrickRow = mouseY / BRICK_H;
+
+    colorText(
+      `${mouseBrickCol}, ${mouseBrickRow}`,
+      mouseX + 10,
+      mouseY,
+      "yellow"
+    );
   };
 
   // UPDATE
