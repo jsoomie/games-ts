@@ -1,4 +1,11 @@
-import { rectangle, circle, colorText, bricks, brickReset } from "./actions";
+import {
+  rectangle,
+  circle,
+  colorText,
+  bricks,
+  brickReset,
+  rowColToArrayIndex,
+} from "./actions";
 
 // START
 global.onload = function () {
@@ -9,12 +16,12 @@ global.onload = function () {
   let ballSpeedY = 7; // Y-AXIS SPEED
 
   // BRICKS
-  const BRICK_W = 100;
-  const BRICK_H = 50;
-  const BRICK_COLS = 8;
-  const BRICK_ROWS = 5;
+  const BRICK_W = 80;
+  const BRICK_H = 20;
+  const BRICK_COLS = 10;
+  const BRICK_ROWS = 14;
   const BRICK_GAP = 2;
-  const brickGrid = new Array(BRICK_COLS);
+  const brickGrid = new Array(BRICK_COLS * BRICK_ROWS);
 
   // Paddle
   const PADDLE_WIDTH = 100;
@@ -91,7 +98,15 @@ global.onload = function () {
   // DRAW
   const draw = (): void => {
     rectangle(0, 0, canvas.width, canvas.height, "black");
-    bricks(BRICK_GAP, BRICK_W, BRICK_H, "blue", brickGrid, BRICK_ROWS);
+    bricks(
+      BRICK_GAP,
+      BRICK_W,
+      BRICK_H,
+      "blue",
+      brickGrid,
+      BRICK_ROWS,
+      BRICK_COLS
+    );
     circle(ballX, ballY, 10, "white");
     rectangle(
       paddleX,
@@ -101,11 +116,18 @@ global.onload = function () {
       "white"
     );
 
-    const mouseBrickCol = mouseX / BRICK_W;
-    const mouseBrickRow = mouseY / BRICK_H;
+    // GET MOUSE POSITION OVER BRICKS
+    const mouseBrickCol = Math.floor(mouseX / BRICK_W);
+    const mouseBrickRow = Math.floor(mouseY / BRICK_H);
+
+    const brickIndexUnderMouse = rowColToArrayIndex(
+      mouseBrickCol,
+      BRICK_COLS,
+      mouseBrickRow
+    );
 
     colorText(
-      `${mouseBrickCol}, ${mouseBrickRow}`,
+      `${mouseBrickCol}, ${mouseBrickRow}: ${brickIndexUnderMouse}`,
       mouseX + 10,
       mouseY,
       "yellow"

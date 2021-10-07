@@ -54,18 +54,29 @@ export const circle: Circle = (centerX, centerY, radius, fillColor): void => {
   context.fill();
 };
 
-// Create Bricks
+export const rowColToArrayIndex = (
+  col: number,
+  brickCol: number,
+  row: number
+) => {
+  return col + brickCol * row;
+};
+
+// Create Bricks rows and cols
 export const bricks = (
   gap: number,
   width: number,
   height: number,
   fillColor: string,
   grid: boolean[],
-  brickRows: number
+  brickRows: number,
+  brickCols: number
 ) => {
   for (let eachRow = 0; eachRow < brickRows; eachRow++) {
     for (let eachCol = 0; eachCol < grid.length; eachCol++) {
-      if (grid[eachCol]) {
+      const arrayIndex = rowColToArrayIndex(eachCol, brickCols, eachRow);
+
+      if (grid[arrayIndex]) {
         rectangle(
           width * eachCol,
           height * eachRow,
@@ -78,11 +89,12 @@ export const bricks = (
   }
 };
 
+// RESETS BRICKS
 export const brickReset = (grid: boolean[]) => {
   for (let i = 0; i < grid.length; i++) {
-    grid[i] = true;
-    // if (Math.random() < 0.5) {
-    //   grid[i] = true;
-    // }
+    // grid[i] = true;
+    if (Math.random() < 0.5) {
+      grid[i] = true;
+    }
   }
 };
