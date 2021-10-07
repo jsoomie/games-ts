@@ -1,3 +1,4 @@
+console.log("Hello");
 type Circle = (
   centerX: number,
   centerY: number,
