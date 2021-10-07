@@ -49,6 +49,12 @@ global.onload = function () {
     mouseY = e.clientY - rect.top - root.scrollTop;
 
     paddleX = mouseX - PADDLE_WIDTH / 2;
+
+    // // CHEATS
+    // ballX = mouseX;
+    // ballY = mouseY;
+    // ballSpeedX = 3;
+    // ballSpeedY = -4;
   };
 
   // BALL RESET
@@ -57,8 +63,7 @@ global.onload = function () {
     ballY = canvas.height / 2;
   };
 
-  // Movement logic
-  function moveAll() {
+  function ballMove() {
     ballX += ballSpeedX;
     ballY += ballSpeedY;
 
@@ -76,11 +81,14 @@ global.onload = function () {
     } else if (ballY < 0) {
       ballSpeedY *= -1;
     }
+  }
 
+  function ballBrickHandling() {
     // GET MOUSE POSITION OVER BRICKS
     const ballBrickCol = Math.floor(ballX / BRICK_W);
     const ballBrickRow = Math.floor(ballY / BRICK_H);
 
+    // BALL ON COLLISION
     const brickIndexUnderBall = rowColToArrayIndex(
       ballBrickCol,
       BRICK_COLS,
@@ -95,10 +103,48 @@ global.onload = function () {
     ) {
       if (brickGrid[brickIndexUnderBall]) {
         brickGrid[brickIndexUnderBall] = false;
-        ballSpeedY *= -1;
+
+        const prevBallX = ballX - ballSpeedX;
+        const prevBallY = ballY - ballSpeedY;
+        const prevBrickCol = Math.floor(prevBallX / BRICK_W);
+        const prevBrickRow = Math.floor(prevBallY / BRICK_H);
+
+        let bothTestFailed = true;
+
+        if (prevBrickCol !== ballBrickCol) {
+          const adjBrickSide = rowColToArrayIndex(
+            prevBrickCol,
+            BRICK_COLS,
+            ballBrickRow
+          );
+          if (brickGrid[adjBrickSide] === false) {
+            ballSpeedX *= -1;
+            bothTestFailed = false;
+          }
+        }
+
+        if (prevBrickRow !== ballBrickRow) {
+          const adjBrickTopBot = rowColToArrayIndex(
+            ballBrickCol,
+            BRICK_COLS,
+            prevBrickRow
+          );
+          if (brickGrid[adjBrickTopBot] === false) {
+            ballSpeedY *= -1;
+            bothTestFailed = false;
+          }
+        }
+
+        if (bothTestFailed) {
+          ballSpeedX *= -1;
+          ballSpeedY *= -1;
+        }
       }
     }
+  }
 
+  // PADDLE HANDLING
+  function ballPaddleHandling() {
     // paddle ball physx logic
     const paddleTopEdgeY = canvas.height - PADDLE_DIST_FROM_EDGE;
     const paddleBottomEdgeY = paddleTopEdgeY + PADDLE_THICKNESS;
@@ -115,6 +161,13 @@ global.onload = function () {
       const ballDistFromPaddleCenterX = ballX - centerOfPaddleX;
       ballSpeedX = ballDistFromPaddleCenterX * 0.35;
     }
+  }
+
+  // Movement logic
+  function moveAll() {
+    ballMove();
+    ballBrickHandling();
+    ballPaddleHandling();
   }
 
   // DRAW
