@@ -68,6 +68,7 @@ global.onload = function () {
       ballSpeedY *= -1;
     }
 
+    // paddle ball physx logic
     const paddleTopEdgeY = canvas.height - PADDLE_DIST_FROM_EDGE;
     const paddleBottomEdgeY = paddleTopEdgeY + PADDLE_THICKNESS;
     const paddleLeftEdgeX = paddleX;
