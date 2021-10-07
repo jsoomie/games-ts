@@ -77,6 +77,28 @@ global.onload = function () {
       ballSpeedY *= -1;
     }
 
+    // GET MOUSE POSITION OVER BRICKS
+    const ballBrickCol = Math.floor(ballX / BRICK_W);
+    const ballBrickRow = Math.floor(ballY / BRICK_H);
+
+    const brickIndexUnderBall = rowColToArrayIndex(
+      ballBrickCol,
+      BRICK_COLS,
+      ballBrickRow
+    );
+
+    if (
+      ballBrickCol >= 0 &&
+      ballBrickCol < BRICK_COLS &&
+      ballBrickRow >= 0 &&
+      ballBrickRow < BRICK_ROWS
+    ) {
+      if (brickGrid[brickIndexUnderBall]) {
+        brickGrid[brickIndexUnderBall] = false;
+        ballSpeedY *= -1;
+      }
+    }
+
     // paddle ball physx logic
     const paddleTopEdgeY = canvas.height - PADDLE_DIST_FROM_EDGE;
     const paddleBottomEdgeY = paddleTopEdgeY + PADDLE_THICKNESS;
@@ -117,21 +139,28 @@ global.onload = function () {
     );
 
     // GET MOUSE POSITION OVER BRICKS
-    const mouseBrickCol = Math.floor(mouseX / BRICK_W);
-    const mouseBrickRow = Math.floor(mouseY / BRICK_H);
+    // const mouseBrickCol = Math.floor(mouseX / BRICK_W);
+    // const mouseBrickRow = Math.floor(mouseY / BRICK_H);
 
-    const brickIndexUnderMouse = rowColToArrayIndex(
-      mouseBrickCol,
-      BRICK_COLS,
-      mouseBrickRow
-    );
+    // const brickIndexUnderMouse = rowColToArrayIndex(
+    //   mouseBrickCol,
+    //   BRICK_COLS,
+    //   mouseBrickRow
+    // );
 
-    colorText(
-      `${mouseBrickCol}, ${mouseBrickRow}: ${brickIndexUnderMouse}`,
-      mouseX + 10,
-      mouseY,
-      "yellow"
-    );
+    // colorText(
+    //   `${mouseBrickCol}, ${mouseBrickRow}: ${brickIndexUnderMouse}`,
+    //   mouseX + 10,
+    //   mouseY,
+    //   "yellow"
+    // );
+
+    // if (
+    //   brickIndexUnderMouse >= 0 &&
+    //   brickIndexUnderMouse < BRICK_COLS * BRICK_ROWS
+    // ) {
+    //   brickGrid[brickIndexUnderMouse] = false;
+    // }
   };
 
   // UPDATE
