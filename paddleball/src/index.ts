@@ -1,11 +1,4 @@
-import {
-  rectangle,
-  circle,
-  colorText,
-  bricks,
-  brickReset,
-  rowColToArrayIndex,
-} from "./actions";
+import { rectangle, circle, bricks, rowColToArrayIndex } from "./actions";
 
 // START
 global.onload = function () {
@@ -22,6 +15,7 @@ global.onload = function () {
   const BRICK_ROWS = 14;
   const BRICK_GAP = 2;
   const brickGrid = new Array(BRICK_COLS * BRICK_ROWS);
+  let bricksLeft = 0;
 
   // Paddle
   const PADDLE_WIDTH = 100;
@@ -35,10 +29,29 @@ global.onload = function () {
 
   // Game setup
   const canvas = document.getElementById("gameCanvas") as HTMLCanvasElement;
-  // const context = canvas.getContext("2d") as CanvasRenderingContext2D;
+
+  // BALL RESET
+  const ballReset = () => {
+    ballX = canvas.width / 2;
+    ballY = canvas.height / 2;
+  };
 
   // Reset bricks
-  brickReset(brickGrid);
+  function brickReset() {
+    bricksLeft = 0;
+    let i: number;
+    for (i = 0; i < 3 * BRICK_COLS; i++) {
+      brickGrid[i] = false;
+    }
+
+    for (; i < BRICK_COLS * BRICK_ROWS; i++) {
+      brickGrid[i] = true;
+      bricksLeft++;
+    }
+  }
+
+  brickReset();
+  ballReset();
 
   // MOUSE EVENTS
   const updateMousePos = (e: MouseEvent): void => {
@@ -53,14 +66,8 @@ global.onload = function () {
     // // CHEATS
     // ballX = mouseX;
     // ballY = mouseY;
-    // ballSpeedX = 3;
+    // ballSpeedX = 4;
     // ballSpeedY = -4;
-  };
-
-  // BALL RESET
-  const ballReset = () => {
-    ballX = canvas.width / 2;
-    ballY = canvas.height / 2;
   };
 
   function ballMove() {
@@ -68,18 +75,28 @@ global.onload = function () {
     ballY += ballSpeedY;
 
     // BALL X-AXIS BORDERS
-    if (ballX > canvas.width) {
+    if (ballX > canvas.width && ballSpeedX > 0.0) {
       ballSpeedX *= -1;
-    } else if (ballX < 0) {
+    } else if (ballX < 0 && ballSpeedX < 0.0) {
       ballSpeedX *= -1;
     }
 
     // BALL Y-AXIS BORDERS
     if (ballY > canvas.height) {
       ballReset();
+      brickReset();
       ballSpeedY *= -1;
-    } else if (ballY < 0) {
+    } else if (ballY < 0 && ballSpeedY < 0.0) {
       ballSpeedY *= -1;
+    }
+  }
+
+  function isBrickAtRowCol(col: number, row: number) {
+    if (col >= 0 && col < BRICK_COLS && row >= 0 && row < BRICK_ROWS) {
+      const brickIndexUnderCoord = rowColToArrayIndex(col, BRICK_COLS, row);
+      return brickGrid[brickIndexUnderCoord];
+    } else {
+      return false;
     }
   }
 
@@ -101,8 +118,9 @@ global.onload = function () {
       ballBrickRow >= 0 &&
       ballBrickRow < BRICK_ROWS
     ) {
-      if (brickGrid[brickIndexUnderBall]) {
+      if (isBrickAtRowCol(ballBrickCol, ballBrickRow)) {
         brickGrid[brickIndexUnderBall] = false;
+        bricksLeft--;
 
         const prevBallX = ballX - ballSpeedX;
         const prevBallY = ballY - ballSpeedY;
@@ -117,7 +135,8 @@ global.onload = function () {
             BRICK_COLS,
             ballBrickRow
           );
-          if (brickGrid[adjBrickSide] === false) {
+
+          if (isBrickAtRowCol(prevBrickCol, ballBrickRow) === false) {
             ballSpeedX *= -1;
             bothTestFailed = false;
           }
@@ -129,7 +148,8 @@ global.onload = function () {
             BRICK_COLS,
             prevBrickRow
           );
-          if (brickGrid[adjBrickTopBot] === false) {
+
+          if (isBrickAtRowCol(ballBrickCol, prevBrickRow) === false) {
             ballSpeedY *= -1;
             bothTestFailed = false;
           }
@@ -161,6 +181,10 @@ global.onload = function () {
       const ballDistFromPaddleCenterX = ballX - centerOfPaddleX;
       ballSpeedX = ballDistFromPaddleCenterX * 0.35;
     }
+
+    if (bricksLeft === 0) {
+      brickReset();
+    }
   }
 
   // Movement logic
@@ -190,30 +214,6 @@ global.onload = function () {
       PADDLE_THICKNESS,
       "white"
     );
-
-    // GET MOUSE POSITION OVER BRICKS
-    // const mouseBrickCol = Math.floor(mouseX / BRICK_W);
-    // const mouseBrickRow = Math.floor(mouseY / BRICK_H);
-
-    // const brickIndexUnderMouse = rowColToArrayIndex(
-    //   mouseBrickCol,
-    //   BRICK_COLS,
-    //   mouseBrickRow
-    // );
-
-    // colorText(
-    //   `${mouseBrickCol}, ${mouseBrickRow}: ${brickIndexUnderMouse}`,
-    //   mouseX + 10,
-    //   mouseY,
-    //   "yellow"
-    // );
-
-    // if (
-    //   brickIndexUnderMouse >= 0 &&
-    //   brickIndexUnderMouse < BRICK_COLS * BRICK_ROWS
-    // ) {
-    //   brickGrid[brickIndexUnderMouse] = false;
-    // }
   };
 
   // UPDATE

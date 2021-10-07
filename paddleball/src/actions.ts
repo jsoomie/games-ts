@@ -88,10 +88,3 @@ export const bricks = (
     }
   }
 };
-
-// RESETS BRICKS
-export const brickReset = (grid: boolean[]) => {
-  for (let i = 0; i < grid.length; i++) {
-    grid[i] = true;
-  }
-};
