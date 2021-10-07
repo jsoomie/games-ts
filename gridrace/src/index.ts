@@ -67,8 +67,16 @@ const tracks = (
   }
 };
 
+const carPic = document.createElement("img") as HTMLImageElement;
+let carPicLoaded = false;
+
 // START ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 window.onload = function () {
+  carPic.onload = function () {
+    carPicLoaded = true;
+  };
+  carPic.src = "./player_car.png";
+
   // Ball position and speed
   let ballX = 75; // X-AXIS
   let ballY = 75; // Y-AXIS
@@ -92,7 +100,7 @@ window.onload = function () {
                       1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1,  //  7
                       1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1,  //  8
                       1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1,  //  9
-                      1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1,  //  10
+                      1, 0, 2, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1,  //  10
                       1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1,  //  11
                       1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 1,  //  12
                       1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1,  //  13
@@ -108,8 +116,17 @@ window.onload = function () {
 
   // BALL RESET
   const ballReset = () => {
-    ballX = canvas.width / 2;
-    ballY = canvas.height / 2;
+    for (let eachRow = 0; eachRow < TRACK_ROWS; eachRow++) {
+      for (let eachCol = 0; eachCol < TRACK_COLS; eachCol++) {
+        const arrayIndex = rowColToArrayIndex(eachCol, TRACK_COLS, eachRow);
+
+        if (trackGrid[arrayIndex] === 2) {
+          trackGrid[arrayIndex] = 0;
+          ballX = eachCol * TRACK_W + TRACK_W / 2;
+          ballY = eachRow * TRACK_H + TRACK_H / 2;
+        }
+      }
+    }
   };
 
   ballReset();
@@ -214,13 +231,21 @@ window.onload = function () {
 
   // Movement logic
   function moveAll() {
-    ballMove();
+    // ballMove();
     ballTrackHandling();
   }
 
   // DRAW
   const draw = (): void => {
     rectangle(0, 0, canvas.width, canvas.height, "black");
+    console.log(carPicLoaded);
+    if (carPicLoaded) {
+      context.drawImage(
+        carPic,
+        ballX - carPic.width / 2,
+        ballY - carPic.height / 2
+      );
+    }
     tracks(
       TRACK_GAP,
       TRACK_W,
@@ -230,7 +255,7 @@ window.onload = function () {
       TRACK_ROWS,
       TRACK_COLS
     );
-    circle(ballX, ballY, 10, "white");
+    // circle(ballX, ballY, 10, "white");
   };
 
   // UPDATE
