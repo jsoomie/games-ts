@@ -67,11 +67,13 @@ const tracks = (
   }
 };
 
+// Car implements img tag
 const carPic = document.createElement("img") as HTMLImageElement;
 let carPicLoaded = false;
 
 // START ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 window.onload = function () {
+  // Onload to to see if pic has finished loading
   carPic.onload = function () {
     carPicLoaded = true;
   };
@@ -162,6 +164,7 @@ window.onload = function () {
     }
   }
 
+  // See where the tracks row at column and row
   function isTrackAtRowCol(col: number, row: number) {
     if (col >= 0 && col < TRACK_COLS && row >= 0 && row < TRACK_ROWS) {
       const trackIndexUnderCoord = rowColToArrayIndex(col, TRACK_COLS, row);
@@ -171,6 +174,7 @@ window.onload = function () {
     }
   }
 
+  // Handles track
   function carTrackHandling() {
     // GET MOUSE POSITION OVER TRACKS
     const carTrackCol = Math.floor(carX / TRACK_W);
@@ -237,6 +241,7 @@ window.onload = function () {
     carTrackHandling();
   }
 
+  // Change bitmap to turn image
   function drawBitmapCenteredWithRotation(
     useBitmap: HTMLImageElement,
     atX: number,
