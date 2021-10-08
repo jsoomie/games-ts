@@ -77,11 +77,11 @@ window.onload = function () {
   };
   carPic.src = "./player_car.png";
 
-  // Ball position and speed
-  let ballX = 75; // X-AXIS
-  let ballY = 75; // Y-AXIS
-  let ballSpeedX = 5; // X-AXIS SPEED
-  let ballSpeedY = 7; // Y-AXIS SPEED
+  // Car position and speed
+  let carX = 75; // X-AXIS
+  let carY = 75; // Y-AXIS
+  let carSpeedX = 5; // X-AXIS SPEED
+  let carSpeedY = 7; // Y-AXIS SPEED
 
   // TRACKS
   const TRACK_W = 40;
@@ -114,22 +114,22 @@ window.onload = function () {
   // Game setup
   const canvas = document.getElementById("gameCanvas") as HTMLCanvasElement;
 
-  // BALL RESET
-  const ballReset = () => {
+  // CAR RESET
+  const carReset = () => {
     for (let eachRow = 0; eachRow < TRACK_ROWS; eachRow++) {
       for (let eachCol = 0; eachCol < TRACK_COLS; eachCol++) {
         const arrayIndex = rowColToArrayIndex(eachCol, TRACK_COLS, eachRow);
 
         if (trackGrid[arrayIndex] === 2) {
           trackGrid[arrayIndex] = 0;
-          ballX = eachCol * TRACK_W + TRACK_W / 2;
-          ballY = eachRow * TRACK_H + TRACK_H / 2;
+          carX = eachCol * TRACK_W + TRACK_W / 2;
+          carY = eachRow * TRACK_H + TRACK_H / 2;
         }
       }
     }
   };
 
-  ballReset();
+  carReset();
 
   // MOUSE EVENTS
   const updateMousePos = (e: MouseEvent): void => {
@@ -140,23 +140,23 @@ window.onload = function () {
     mouseY = e.clientY - rect.top - root.scrollTop;
   };
 
-  function ballMove() {
-    ballX += ballSpeedX;
-    ballY += ballSpeedY;
+  function carMove() {
+    carX += carSpeedX;
+    carY += carSpeedY;
 
-    // BALL X-AXIS BORDERS
-    if (ballX > canvas.width && ballSpeedX > 0.0) {
-      ballSpeedX *= -1;
-    } else if (ballX < 0 && ballSpeedX < 0.0) {
-      ballSpeedX *= -1;
+    // CAR X-AXIS BORDERS
+    if (carX > canvas.width && carSpeedX > 0.0) {
+      carSpeedX *= -1;
+    } else if (carX < 0 && carSpeedX < 0.0) {
+      carSpeedX *= -1;
     }
 
-    // BALL Y-AXIS BORDERS
-    if (ballY > canvas.height) {
-      ballReset();
-      ballSpeedY *= -1;
-    } else if (ballY < 0 && ballSpeedY < 0.0) {
-      ballSpeedY *= -1;
+    // CAR Y-AXIS BORDERS
+    if (carY > canvas.height) {
+      carReset();
+      carSpeedY *= -1;
+    } else if (carY < 0 && carSpeedY < 0.0) {
+      carSpeedY *= -1;
     }
   }
 
@@ -169,61 +169,61 @@ window.onload = function () {
     }
   }
 
-  function ballTrackHandling() {
+  function carTrackHandling() {
     // GET MOUSE POSITION OVER TRACKS
-    const ballTrackCol = Math.floor(ballX / TRACK_W);
-    const ballTrackRow = Math.floor(ballY / TRACK_H);
+    const carTrackCol = Math.floor(carX / TRACK_W);
+    const carTrackRow = Math.floor(carY / TRACK_H);
 
-    // BALL ON COLLISION
-    const trackIndexUnderBall = rowColToArrayIndex(
-      ballTrackCol,
+    // CAR ON COLLISION
+    const trackIndexUnderCar = rowColToArrayIndex(
+      carTrackCol,
       TRACK_COLS,
-      ballTrackRow
+      carTrackRow
     );
 
     if (
-      ballTrackCol >= 0 &&
-      ballTrackCol < TRACK_COLS &&
-      ballTrackRow >= 0 &&
-      ballTrackRow < TRACK_ROWS
+      carTrackCol >= 0 &&
+      carTrackCol < TRACK_COLS &&
+      carTrackRow >= 0 &&
+      carTrackRow < TRACK_ROWS
     ) {
-      if (isTrackAtRowCol(ballTrackCol, ballTrackRow)) {
-        const prevBallX = ballX - ballSpeedX;
-        const prevBallY = ballY - ballSpeedY;
-        const prevTrackCol = Math.floor(prevBallX / TRACK_W);
-        const prevTrackRow = Math.floor(prevBallY / TRACK_H);
+      if (isTrackAtRowCol(carTrackCol, carTrackRow)) {
+        const prevCarX = carX - carSpeedX;
+        const prevCarY = carY - carSpeedY;
+        const prevTrackCol = Math.floor(prevCarX / TRACK_W);
+        const prevTrackRow = Math.floor(prevCarY / TRACK_H);
 
         let bothTestFailed = true;
 
-        if (prevTrackCol !== ballTrackCol) {
+        if (prevTrackCol !== carTrackCol) {
           const adjTrackSide = rowColToArrayIndex(
             prevTrackCol,
             TRACK_COLS,
-            ballTrackRow
+            carTrackRow
           );
 
-          if (isTrackAtRowCol(prevTrackCol, ballTrackRow) === false) {
-            ballSpeedX *= -1;
+          if (isTrackAtRowCol(prevTrackCol, carTrackRow) === false) {
+            carSpeedX *= -1;
             bothTestFailed = false;
           }
         }
 
-        if (prevTrackRow !== ballTrackRow) {
+        if (prevTrackRow !== carTrackRow) {
           const adjTrackTopBot = rowColToArrayIndex(
-            ballTrackCol,
+            carTrackCol,
             TRACK_COLS,
             prevTrackRow
           );
 
-          if (isTrackAtRowCol(ballTrackCol, prevTrackRow) === false) {
-            ballSpeedY *= -1;
+          if (isTrackAtRowCol(carTrackCol, prevTrackRow) === false) {
+            carSpeedY *= -1;
             bothTestFailed = false;
           }
         }
 
         if (bothTestFailed) {
-          ballSpeedX *= -1;
-          ballSpeedY *= -1;
+          carSpeedX *= -1;
+          carSpeedY *= -1;
         }
       }
     }
@@ -231,8 +231,8 @@ window.onload = function () {
 
   // Movement logic
   function moveAll() {
-    // ballMove();
-    ballTrackHandling();
+    carMove();
+    carTrackHandling();
   }
 
   // DRAW
@@ -242,10 +242,11 @@ window.onload = function () {
     if (carPicLoaded) {
       context.drawImage(
         carPic,
-        ballX - carPic.width / 2,
-        ballY - carPic.height / 2
+        carX - carPic.width / 2,
+        carY - carPic.height / 2
       );
     }
+
     tracks(
       TRACK_GAP,
       TRACK_W,
@@ -255,7 +256,7 @@ window.onload = function () {
       TRACK_ROWS,
       TRACK_COLS
     );
-    // circle(ballX, ballY, 10, "white");
+    // circle(carX, carY, 10, "white");
   };
 
   // UPDATE
