@@ -82,10 +82,8 @@ window.onload = function () {
   // Car position and speed
   let carX = 75; // X-AXIS
   let carY = 75; // Y-AXIS
-  let carSpeedX = 5; // X-AXIS SPEED
-  let carSpeedY = 7; // Y-AXIS SPEED
-  let carSpeed = 2;
-  let carAngle = 0;
+  let carSpeed = 0; // Car Speed
+  let carAngle = 0; // Car Angle
 
   // TRACKS
   const TRACK_W = 40;
@@ -118,6 +116,12 @@ window.onload = function () {
   // Game setup
   const canvas = document.getElementById("gameCanvas") as HTMLCanvasElement;
 
+  // Held down keys
+  let keyHeldGas = false;
+  let keyHeldReverse = false;
+  let keyHeldTurnLeft = false;
+  let keyHeldTurnRight = false;
+
   // LEFT: 37
   // UP: 38
   // RIGHT: 39
@@ -130,24 +134,53 @@ window.onload = function () {
     DOWN = "ArrowDown",
   }
 
+  // which key is pressed
   function keyPressed(e: KeyboardEvent) {
     // console.log(`Key Pressed: ${e.code} ${e.keyCode}`);
+
+    // LEFT KEY
     if (e.key === Key.LEFT) {
-      carAngle -= 0.5;
+      keyHeldTurnLeft = true;
     }
+
+    // RIGHT KEY
     if (e.key === Key.RIGHT) {
-      carAngle += 0.5;
+      keyHeldTurnRight = true;
     }
+
+    // UP KEY
     if (e.key === Key.UP) {
-      carSpeed += 0.5;
+      keyHeldGas = true;
     }
+
+    // DOWN KEY
     if (e.key === Key.DOWN) {
-      carSpeed -= 0.5;
+      keyHeldReverse = true;
     }
   }
 
   function keyReleased(e: KeyboardEvent) {
     // console.log(`Key Released: ${e.code} ${e.keyCode}`);
+
+    // LEFT KEY
+    if (e.key === Key.LEFT) {
+      keyHeldTurnLeft = false;
+    }
+
+    // RIGHT KEY
+    if (e.key === Key.RIGHT) {
+      keyHeldTurnRight = false;
+    }
+
+    // UP KEY
+    if (e.key === Key.UP) {
+      keyHeldGas = false;
+    }
+
+    // DOWN KEY
+    if (e.key === Key.DOWN) {
+      keyHeldReverse = false;
+    }
   }
 
   // Controls
@@ -181,6 +214,19 @@ window.onload = function () {
   };
 
   function carMove() {
+    if (keyHeldGas) {
+      carSpeed += 0.2;
+    }
+    if (keyHeldReverse) {
+      carSpeed -= 0.2;
+    }
+    if (keyHeldTurnLeft) {
+      carAngle -= 0.04;
+    }
+    if (keyHeldTurnRight) {
+      carAngle += 0.04;
+    }
+
     carX += Math.cos(carAngle) * carSpeed;
     carY += Math.sin(carAngle) * carSpeed;
   }
