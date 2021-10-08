@@ -84,6 +84,7 @@ window.onload = function () {
   let carY = 75; // Y-AXIS
   let carSpeedX = 5; // X-AXIS SPEED
   let carSpeedY = 7; // Y-AXIS SPEED
+  let carSpeed = 2;
   let carAngle = 0;
 
   // TRACKS
@@ -117,6 +118,42 @@ window.onload = function () {
   // Game setup
   const canvas = document.getElementById("gameCanvas") as HTMLCanvasElement;
 
+  // LEFT: 37
+  // UP: 38
+  // RIGHT: 39
+  // DOWN: 40
+
+  enum Key {
+    LEFT = "ArrowLeft",
+    UP = "ArrowUp",
+    RIGHT = "ArrowRight",
+    DOWN = "ArrowDown",
+  }
+
+  function keyPressed(e: KeyboardEvent) {
+    // console.log(`Key Pressed: ${e.code} ${e.keyCode}`);
+    if (e.key === Key.LEFT) {
+      carAngle -= 0.5;
+    }
+    if (e.key === Key.RIGHT) {
+      carAngle += 0.5;
+    }
+    if (e.key === Key.UP) {
+      carSpeed += 0.5;
+    }
+    if (e.key === Key.DOWN) {
+      carSpeed -= 0.5;
+    }
+  }
+
+  function keyReleased(e: KeyboardEvent) {
+    // console.log(`Key Released: ${e.code} ${e.keyCode}`);
+  }
+
+  // Controls
+  document.addEventListener("keydown", keyPressed);
+  document.addEventListener("keyup", keyReleased);
+
   // CAR RESET
   const carReset = () => {
     for (let eachRow = 0; eachRow < TRACK_ROWS; eachRow++) {
@@ -144,24 +181,8 @@ window.onload = function () {
   };
 
   function carMove() {
-    // carX += carSpeedX;
-    // carY += carSpeedY;
-    carAngle += 0.02;
-
-    // CAR X-AXIS BORDERS
-    if (carX > canvas.width && carSpeedX > 0.0) {
-      carSpeedX *= -1;
-    } else if (carX < 0 && carSpeedX < 0.0) {
-      carSpeedX *= -1;
-    }
-
-    // CAR Y-AXIS BORDERS
-    if (carY > canvas.height) {
-      carReset();
-      carSpeedY *= -1;
-    } else if (carY < 0 && carSpeedY < 0.0) {
-      carSpeedY *= -1;
-    }
+    carX += Math.cos(carAngle) * carSpeed;
+    carY += Math.sin(carAngle) * carSpeed;
   }
 
   // See where the tracks row at column and row
@@ -194,43 +215,7 @@ window.onload = function () {
       carTrackRow < TRACK_ROWS
     ) {
       if (isTrackAtRowCol(carTrackCol, carTrackRow)) {
-        const prevCarX = carX - carSpeedX;
-        const prevCarY = carY - carSpeedY;
-        const prevTrackCol = Math.floor(prevCarX / TRACK_W);
-        const prevTrackRow = Math.floor(prevCarY / TRACK_H);
-
-        let bothTestFailed = true;
-
-        if (prevTrackCol !== carTrackCol) {
-          const adjTrackSide = rowColToArrayIndex(
-            prevTrackCol,
-            TRACK_COLS,
-            carTrackRow
-          );
-
-          if (isTrackAtRowCol(prevTrackCol, carTrackRow) === false) {
-            carSpeedX *= -1;
-            bothTestFailed = false;
-          }
-        }
-
-        if (prevTrackRow !== carTrackRow) {
-          const adjTrackTopBot = rowColToArrayIndex(
-            carTrackCol,
-            TRACK_COLS,
-            prevTrackRow
-          );
-
-          if (isTrackAtRowCol(carTrackCol, prevTrackRow) === false) {
-            carSpeedY *= -1;
-            bothTestFailed = false;
-          }
-        }
-
-        if (bothTestFailed) {
-          carSpeedX *= -1;
-          carSpeedY *= -1;
-        }
+        carSpeed *= -1;
       }
     }
   }
