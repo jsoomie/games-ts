@@ -5,15 +5,15 @@ const carPic = document.createElement("img") as HTMLImageElement;
 const imageData = [
   {
     title: carPic,
-    fileSrc: "./player_car.png",
+    fileSrc: "player_car.png",
   },
   {
     title: roadPic,
-    fileSrc: "./track_road.png",
+    fileSrc: "track_road.png",
   },
   {
     title: wallPic,
-    fileSrc: "./track_wall.png",
+    fileSrc: "track_wall.png",
   },
 ];
 
