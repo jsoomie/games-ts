@@ -82,6 +82,7 @@ window.onload = function () {
   let carY = 75; // Y-AXIS
   let carSpeedX = 5; // X-AXIS SPEED
   let carSpeedY = 7; // Y-AXIS SPEED
+  let carAngle = 0;
 
   // TRACKS
   const TRACK_W = 40;
@@ -141,8 +142,9 @@ window.onload = function () {
   };
 
   function carMove() {
-    carX += carSpeedX;
-    carY += carSpeedY;
+    // carX += carSpeedX;
+    // carY += carSpeedY;
+    carAngle += 0.02;
 
     // CAR X-AXIS BORDERS
     if (carX > canvas.width && carSpeedX > 0.0) {
@@ -235,18 +237,30 @@ window.onload = function () {
     carTrackHandling();
   }
 
+  function drawBitmapCenteredWithRotation(
+    useBitmap: HTMLImageElement,
+    atX: number,
+    atY: number,
+    withAngle: number
+  ) {
+    context.save();
+    context.translate(atX, atY);
+    context.rotate(withAngle);
+    context.drawImage(useBitmap, -useBitmap.width / 2, -useBitmap.height / 2);
+    context.restore();
+  }
+
   // DRAW
   const draw = (): void => {
+    // Canvas
     rectangle(0, 0, canvas.width, canvas.height, "black");
-    console.log(carPicLoaded);
+
+    // Car Picture
     if (carPicLoaded) {
-      context.drawImage(
-        carPic,
-        carX - carPic.width / 2,
-        carY - carPic.height / 2
-      );
+      drawBitmapCenteredWithRotation(carPic, carX, carY, carAngle);
     }
 
+    // Track
     tracks(
       TRACK_GAP,
       TRACK_W,
