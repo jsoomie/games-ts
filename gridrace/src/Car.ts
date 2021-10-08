@@ -1,0 +1,74 @@
+// Car implements img tag
+const carPic = document.createElement("img") as HTMLImageElement;
+let carPicLoaded = false;
+
+// Car position and speed
+let carX = 75; // X-AXIS
+let carY = 75; // Y-AXIS
+let carSpeed = 0; // Car Speed
+let carAngle = 0; // Car Angle
+// Adjustable variables
+
+// Car speed settings
+enum Car {
+  GROUNDSPEED_DECAY_MULT = 0.96,
+  DRIVE_POWER = 0.5,
+  REVERSE_POWER = 0.2,
+  TURN_RATE = 0.05,
+  TURN_RATE_WITH_GAS = 0.03,
+  BUMP_SPEED_DECREASE = -0.5,
+} // Non-adjustable variables
+
+// CAR RESET
+const carReset = () => {
+  for (let eachRow = 0; eachRow < Track.ROWS; eachRow++) {
+    for (let eachCol = 0; eachCol < Track.COLS; eachCol++) {
+      const arrayIndex = rowColToArrayIndex(eachCol, Track.COLS, eachRow);
+
+      if (trackGrid[arrayIndex] === TrackGrid.PLAYER_START) {
+        trackGrid[arrayIndex] = TrackGrid.ROAD;
+        carAngle = -Math.PI / 2;
+        carX = eachCol * Track.WIDTH + Track.WIDTH / 2;
+        carY = eachRow * Track.HEIGHT + Track.HEIGHT / 2;
+      }
+    }
+  }
+};
+
+// Car movements
+const carMove = () => {
+  carSpeed *= Car.GROUNDSPEED_DECAY_MULT;
+
+  if (keyHeldGas) {
+    carSpeed += Car.DRIVE_POWER;
+  }
+  if (keyHeldReverse) {
+    carSpeed -= Car.REVERSE_POWER;
+  }
+  if (keyHeldTurnLeft) {
+    if (keyHeldGas && keyHeldTurnLeft) carAngle -= Car.TURN_RATE_WITH_GAS;
+    else carAngle -= Car.TURN_RATE;
+  }
+  if (keyHeldTurnRight) {
+    if (keyHeldGas && keyHeldTurnRight) carAngle += Car.TURN_RATE_WITH_GAS;
+    else carAngle += Car.TURN_RATE;
+  }
+
+  carX += Math.cos(carAngle) * carSpeed;
+  carY += Math.sin(carAngle) * carSpeed;
+};
+
+// Car Picture
+const carDraw = () => {
+  if (carPicLoaded) {
+    drawBitmapCenteredWithRotation(carPic, carX, carY, carAngle);
+  }
+};
+
+// Onload to to see if pic has finished loading
+const carImageLoad = () => {
+  carPic.onload = (): void => {
+    carPicLoaded = true;
+  };
+  carPic.src = "./player_car.png";
+};
