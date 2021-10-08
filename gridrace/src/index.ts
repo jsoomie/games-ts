@@ -19,27 +19,19 @@ window.onload = (): void => {
     rectangle(0, 0, canvas.width, canvas.height, "black");
   };
 
+  loadTrackImages();
+  setupInput();
+  carImageLoad();
+  carReset();
+
   // DRAW
   const draw = (): void => {
     // Clear Screen
     clearScreen();
     // Draw the car
+    drawTracks();
     carDraw();
-    // Create Track
-    tracks(
-      Track.GAP,
-      Track.WIDTH,
-      Track.HEIGHT,
-      "blue",
-      trackGrid,
-      Track.ROWS,
-      Track.COLS
-    );
   };
-
-  setupInput();
-  carImageLoad();
-  carReset();
 
   // Frames per second
   const framesPerSecond = 30;

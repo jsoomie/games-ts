@@ -1,3 +1,6 @@
+const roadPic = document.createElement("img") as HTMLImageElement;
+const wallPic = document.createElement("img") as HTMLImageElement;
+
 // TRACKS settings
 enum Track {
   WIDTH = 40,
@@ -39,6 +42,12 @@ const isWallAtColRow = (col: number, row: number): boolean => {
   } else {
     return false;
   }
+};
+
+// Loads road and wall image
+const loadTrackImages = (): void => {
+  roadPic.src = "./track_road.png";
+  wallPic.src = "./track_wall.png";
 };
 
 // how track handles the car
@@ -84,27 +93,22 @@ type TrackType = (
   trackCols: number
 ) => void;
 
-// Create Tracks rows and cols
-const tracks: TrackType = (
-  gap,
-  width,
-  height,
-  fillColor,
-  grid,
-  trackRows,
-  trackCols
-): void => {
-  for (let eachRow = 0; eachRow < trackRows; eachRow++) {
-    for (let eachCol = 0; eachCol < grid.length; eachCol++) {
-      const arrayIndex = rowColToArrayIndex(eachCol, trackCols, eachRow);
+const drawTracks = (): void => {
+  for (let eachRow = 0; eachRow < Track.ROWS; eachRow++) {
+    for (let eachCol = 0; eachCol < Track.COLS; eachCol++) {
+      const arrayIndex = rowColToArrayIndex(eachCol, Track.COLS, eachRow);
 
-      if (grid[arrayIndex] === 1) {
-        rectangle(
-          width * eachCol,
-          height * eachRow,
-          width - gap,
-          height - gap,
-          fillColor
+      if (trackGrid[arrayIndex] === TrackGrid.ROAD) {
+        context.drawImage(
+          roadPic,
+          Track.WIDTH * eachCol,
+          Track.HEIGHT * eachRow
+        );
+      } else if (trackGrid[arrayIndex] === TrackGrid.WALL) {
+        context.drawImage(
+          wallPic,
+          Track.WIDTH * eachCol,
+          Track.HEIGHT * eachRow
         );
       }
     }
