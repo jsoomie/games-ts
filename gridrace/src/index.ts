@@ -14,11 +14,6 @@ window.onload = (): void => {
     carTrackHandling();
   };
 
-  // Canvas
-  const clearScreen = (): void => {
-    rectangle(0, 0, canvas.width, canvas.height, "black");
-  };
-
   loadTrackImages();
   setupInput();
   carImageLoad();
@@ -26,9 +21,6 @@ window.onload = (): void => {
 
   // DRAW
   const draw = (): void => {
-    // Clear Screen
-    clearScreen();
-    // Draw the car
     drawTracks();
     carDraw();
   };
