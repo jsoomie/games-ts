@@ -215,6 +215,7 @@ window.onload = function () {
   };
 
   function carMove() {
+    console.log(carSpeed);
     carSpeed *= 0.96;
 
     if (keyHeldGas) {
@@ -224,10 +225,12 @@ window.onload = function () {
       carSpeed -= 0.2;
     }
     if (keyHeldTurnLeft) {
-      carAngle -= 0.05;
+      if (keyHeldGas && keyHeldTurnLeft) carAngle -= 0.03;
+      else carAngle -= 0.05;
     }
     if (keyHeldTurnRight) {
-      carAngle += 0.05;
+      if (keyHeldGas && keyHeldTurnRight) carAngle += 0.03;
+      else carAngle += 0.05;
     }
 
     carX += Math.cos(carAngle) * carSpeed;
