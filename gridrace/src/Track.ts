@@ -32,18 +32,17 @@ const trackGrid = [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
                     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]; //  15
 
 // See where the tracks row at column and row
-function isWallAtColRow(col: number, row: number) {
+const isWallAtColRow = (col: number, row: number): boolean => {
   if (col >= 0 && col < Track.COLS && row >= 0 && row < Track.ROWS) {
     const trackIndexUnderCoord = rowColToArrayIndex(col, Track.COLS, row);
     return trackGrid[trackIndexUnderCoord] === TrackGrid.WALL;
   } else {
     return false;
   }
-}
+};
 
 // how track handles the car
-function carTrackHandling() {
-  // GET MOUSE POSITION OVER TRACKS
+const carTrackHandling = (): void => {
   const carTrackCol = Math.floor(carX / Track.WIDTH);
   const carTrackRow = Math.floor(carY / Track.HEIGHT);
 
@@ -64,15 +63,18 @@ function carTrackHandling() {
       carSpeed *= Car.BUMP_SPEED_DECREASE;
     }
   }
-}
+};
 
 // Finds index of rows to columns
-const rowColToArrayIndex = (col: number, trackCol: number, row: number) => {
+const rowColToArrayIndex = (
+  col: number,
+  trackCol: number,
+  row: number
+): number => {
   return col + trackCol * row;
 };
 
-// Create Tracks rows and cols
-const tracks = (
+type TrackType = (
   gap: number,
   width: number,
   height: number,
@@ -80,7 +82,18 @@ const tracks = (
   grid: number[],
   trackRows: number,
   trackCols: number
-) => {
+) => void;
+
+// Create Tracks rows and cols
+const tracks: TrackType = (
+  gap,
+  width,
+  height,
+  fillColor,
+  grid,
+  trackRows,
+  trackCols
+): void => {
   for (let eachRow = 0; eachRow < trackRows; eachRow++) {
     for (let eachCol = 0; eachCol < grid.length; eachCol++) {
       const arrayIndex = rowColToArrayIndex(eachCol, trackCols, eachRow);

@@ -25,7 +25,7 @@ const updateMousePos = (e: MouseEvent): void => {
   mouseY = e.clientY - rect.top - root.scrollTop;
 };
 
-const setupInput = () => {
+const setupInput = (): void => {
   // Mouse Control
   canvas.addEventListener("mousemove", updateMousePos);
 
@@ -35,7 +35,7 @@ const setupInput = () => {
 };
 
 // which key is pressed
-function keyPressed(e: KeyboardEvent) {
+const keyPressed = (e: KeyboardEvent): void => {
   // LEFT KEY
   if (e.key === Key.LEFT) {
     keyHeldTurnLeft = true;
@@ -55,9 +55,9 @@ function keyPressed(e: KeyboardEvent) {
   if (e.key === Key.DOWN) {
     keyHeldReverse = true;
   }
-}
+};
 
-function keyReleased(e: KeyboardEvent) {
+const keyReleased = (e: KeyboardEvent): void => {
   // LEFT KEY
   if (e.key === Key.LEFT) {
     keyHeldTurnLeft = false;
@@ -77,4 +77,4 @@ function keyReleased(e: KeyboardEvent) {
   if (e.key === Key.DOWN) {
     keyHeldReverse = false;
   }
-}
+};
