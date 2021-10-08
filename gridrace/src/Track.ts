@@ -1,6 +1,3 @@
-const roadPic = document.createElement("img") as HTMLImageElement;
-const wallPic = document.createElement("img") as HTMLImageElement;
-
 // TRACKS settings
 enum Track {
   WIDTH = 40,
@@ -42,12 +39,6 @@ const isWallAtColRow = (col: number, row: number): boolean => {
   } else {
     return false;
   }
-};
-
-// Loads road and wall image
-const loadTrackImages = (): void => {
-  roadPic.src = "./track_road.png";
-  wallPic.src = "./track_wall.png";
 };
 
 // how track handles the car

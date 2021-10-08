@@ -1,7 +1,3 @@
-// Car implements img tag
-const carPic = document.createElement("img") as HTMLImageElement;
-let carPicLoaded = false;
-
 // Car position and speed
 let carX = 75; // X-AXIS
 let carY = 75; // Y-AXIS
@@ -14,7 +10,7 @@ enum Car {
   GROUNDSPEED_DECAY_MULT = 0.96,
   DRIVE_POWER = 0.5,
   REVERSE_POWER = 0.2,
-  TURN_RATE = 0.05,
+  TURN_RATE = 0.06,
   TURN_RATE_WITH_GAS = 0.03,
   BUMP_SPEED_DECREASE = -0.5,
 } // Non-adjustable variables
@@ -60,15 +56,5 @@ const carMove = (): void => {
 
 // Car Picture
 const carDraw = (): void => {
-  if (carPicLoaded) {
-    drawBitmapCenteredWithRotation(carPic, carX, carY, carAngle);
-  }
-};
-
-// Onload to to see if pic has finished loading
-const carImageLoad = (): void => {
-  carPic.onload = (): void => {
-    carPicLoaded = true;
-  };
-  carPic.src = "./player_car.png";
+  drawBitmapCenteredWithRotation(carPic, carX, carY, carAngle);
 };
