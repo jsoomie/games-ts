@@ -20,7 +20,7 @@ enum Car {
 } // Non-adjustable variables
 
 // CAR RESET
-const carReset = () => {
+const carReset = (): void => {
   for (let eachRow = 0; eachRow < Track.ROWS; eachRow++) {
     for (let eachCol = 0; eachCol < Track.COLS; eachCol++) {
       const arrayIndex = rowColToArrayIndex(eachCol, Track.COLS, eachRow);
@@ -36,7 +36,7 @@ const carReset = () => {
 };
 
 // Car movements
-const carMove = () => {
+const carMove = (): void => {
   carSpeed *= Car.GROUNDSPEED_DECAY_MULT;
 
   if (keyHeldGas) {
@@ -59,14 +59,14 @@ const carMove = () => {
 };
 
 // Car Picture
-const carDraw = () => {
+const carDraw = (): void => {
   if (carPicLoaded) {
     drawBitmapCenteredWithRotation(carPic, carX, carY, carAngle);
   }
 };
 
 // Onload to to see if pic has finished loading
-const carImageLoad = () => {
+const carImageLoad = (): void => {
   carPic.onload = (): void => {
     carPicLoaded = true;
   };
