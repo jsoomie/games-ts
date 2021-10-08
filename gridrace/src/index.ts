@@ -2,31 +2,31 @@ const canvas = document.getElementById("gameCanvas") as HTMLCanvasElement;
 const context = canvas.getContext("2d") as CanvasRenderingContext2D;
 
 window.onload = (): void => {
-  loadImages();
+  rectangle(0, 0, canvas.width, canvas.height, "black");
+  colorText("LOADING", canvas.width / 2, canvas.height / 2, "white");
+
+  setTimeout(() => loadImages(), 1000);
 };
 
-const imageLoadDone = () => {
+const imageLoadDone = (): void => {
   setupInput();
   carReset();
-  // UPDATE
+
   const update = (): void => {
     moveAll();
     draw();
   };
 
-  // Movement logic
   const moveAll = (): void => {
     carMove();
     carTrackHandling();
   };
 
-  // DRAW
   const draw = (): void => {
     drawTracks();
     carDraw();
   };
 
-  // Frames per second
   const framesPerSecond = 30;
   setInterval(update, 1000 / framesPerSecond);
 };
