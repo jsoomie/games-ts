@@ -195,6 +195,7 @@ window.onload = function () {
 
         if (trackGrid[arrayIndex] === 2) {
           trackGrid[arrayIndex] = 0;
+          carAngle = -Math.PI / 2;
           carX = eachCol * TRACK_W + TRACK_W / 2;
           carY = eachRow * TRACK_H + TRACK_H / 2;
         }
@@ -214,17 +215,19 @@ window.onload = function () {
   };
 
   function carMove() {
+    carSpeed *= 0.96;
+
     if (keyHeldGas) {
-      carSpeed += 0.2;
+      carSpeed += 0.3;
     }
     if (keyHeldReverse) {
       carSpeed -= 0.2;
     }
     if (keyHeldTurnLeft) {
-      carAngle -= 0.04;
+      carAngle -= 0.05;
     }
     if (keyHeldTurnRight) {
-      carAngle += 0.04;
+      carAngle += 0.05;
     }
 
     carX += Math.cos(carAngle) * carSpeed;
@@ -261,7 +264,7 @@ window.onload = function () {
       carTrackRow < TRACK_ROWS
     ) {
       if (isTrackAtRowCol(carTrackCol, carTrackRow)) {
-        carSpeed *= -1;
+        carSpeed *= -0.5;
       }
     }
   }
