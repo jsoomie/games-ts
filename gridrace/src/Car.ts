@@ -8,10 +8,9 @@ let carAngle = 0; // Car Angle
 // Car speed settings
 enum Car {
   GROUNDSPEED_DECAY_MULT = 0.96,
-  DRIVE_POWER = 0.5,
+  DRIVE_POWER = 0.4,
   REVERSE_POWER = 0.2,
-  TURN_RATE = 0.06,
-  TURN_RATE_WITH_GAS = 0.03,
+  TURN_RATE = 0.07,
   BUMP_SPEED_DECREASE = -0.5,
 } // Non-adjustable variables
 
@@ -42,12 +41,14 @@ const carMove = (): void => {
     carSpeed -= Car.REVERSE_POWER;
   }
   if (keyHeldTurnLeft) {
-    if (keyHeldGas && keyHeldTurnLeft) carAngle -= Car.TURN_RATE_WITH_GAS;
-    else carAngle -= Car.TURN_RATE;
+    if (keyHeldGas && keyHeldTurnLeft) {
+      carAngle -= Car.TURN_RATE * Car.DRIVE_POWER;
+    } else carAngle -= Car.TURN_RATE;
   }
   if (keyHeldTurnRight) {
-    if (keyHeldGas && keyHeldTurnRight) carAngle += Car.TURN_RATE_WITH_GAS;
-    else carAngle += Car.TURN_RATE;
+    if (keyHeldGas && keyHeldTurnRight) {
+      carAngle += Car.TURN_RATE * Car.DRIVE_POWER;
+    } else carAngle += Car.TURN_RATE;
   }
 
   carX += Math.cos(carAngle) * carSpeed;
