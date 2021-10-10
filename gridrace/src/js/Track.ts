@@ -35,12 +35,15 @@ const trackGrid = [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
                     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]; //  15
 
 // See where the tracks row at column and row
-const isWallAtColRow = (col: number, row: number): boolean => {
+const returnTileTypeAtColRow = (
+  col: number,
+  row: number
+): TrackGrid | boolean => {
   if (col >= 0 && col < Track.COLS && row >= 0 && row < Track.ROWS) {
     const trackIndexUnderCoord = rowColToArrayIndex(col, Track.COLS, row);
-    return trackGrid[trackIndexUnderCoord] !== TrackGrid.ROAD;
+    return trackGrid[trackIndexUnderCoord];
   } else {
-    return false;
+    return TrackGrid.WALL;
   }
 };
 
@@ -62,7 +65,11 @@ const carTrackHandling = (car: Cars): void => {
     carTrackRow >= 0 &&
     carTrackRow < Track.ROWS
   ) {
-    if (isWallAtColRow(carTrackCol, carTrackRow)) {
+    const tileHere = returnTileTypeAtColRow(carTrackCol, carTrackRow);
+
+    if (tileHere === TrackGrid.GOAL) {
+      console.log(`${car.name} WINS`);
+    } else if (tileHere !== TrackGrid.ROAD) {
       car.speed *= Car.BUMP_SPEED_DECREASE;
     }
   }
