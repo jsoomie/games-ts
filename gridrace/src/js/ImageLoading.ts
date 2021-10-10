@@ -1,6 +1,9 @@
+const carPic = document.createElement("img") as HTMLImageElement;
 const roadPic = document.createElement("img") as HTMLImageElement;
 const wallPic = document.createElement("img") as HTMLImageElement;
-const carPic = document.createElement("img") as HTMLImageElement;
+const goalPic = document.createElement("img") as HTMLImageElement;
+const treePic = document.createElement("img") as HTMLImageElement;
+const flagPic = document.createElement("img") as HTMLImageElement;
 
 const imageData = [
   {
@@ -14,6 +17,18 @@ const imageData = [
   {
     title: wallPic,
     fileSrc: "track_wall.png",
+  },
+  {
+    title: goalPic,
+    fileSrc: "track_goal.png",
+  },
+  {
+    title: treePic,
+    fileSrc: "track_tree.png",
+  },
+  {
+    title: flagPic,
+    fileSrc: "track_flag.png",
   },
 ];
 
