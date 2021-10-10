@@ -1,4 +1,5 @@
 const carPic = document.createElement("img") as HTMLImageElement;
+const otherCarPic = document.createElement("img") as HTMLImageElement;
 // const roadPic = document.createElement("img") as HTMLImageElement;
 // const wallPic = document.createElement("img") as HTMLImageElement;
 // const goalPic = document.createElement("img") as HTMLImageElement;
@@ -11,6 +12,10 @@ const imageData = [
   {
     title: carPic,
     fileSrc: "player_car.png",
+  },
+  {
+    title: otherCarPic,
+    fileSrc: "player2_car.png",
   },
   {
     trackType: TrackGrid.ROAD,

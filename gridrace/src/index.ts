@@ -12,8 +12,8 @@ window.onload = (): void => {
 
 const imageLoadDone = (): void => {
   setupInput();
-  blueCar.reset();
-  greenCar.reset();
+  blueCar.reset(carPic);
+  greenCar.reset(otherCarPic);
 
   const update = (): void => {
     moveAll();

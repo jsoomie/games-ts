@@ -13,15 +13,18 @@ class Cars {
   public y: number;
   public speed: number;
   public angle: number;
+  public myCarPic?: HTMLImageElement;
 
   constructor() {
     this.x = 75; // X-AXIS
     this.y = 75; // Y-AXIS
     this.speed = 0; // Car Speed
     this.angle = 0; // Car Angle
+    this.myCarPic;
   }
 
-  reset(): void {
+  reset(image: any): void {
+    this.myCarPic = image;
     for (let eachRow = 0; eachRow < Track.ROWS; eachRow++) {
       for (let eachCol = 0; eachCol < Track.COLS; eachCol++) {
         const arrayIndex = rowColToArrayIndex(eachCol, Track.COLS, eachRow);
@@ -66,13 +69,7 @@ class Cars {
   }
 
   draw(): void {
-    drawBitmapCenteredWithRotation(carPic, this.x, this.y, this.angle);
+    if (this.myCarPic)
+      drawBitmapCenteredWithRotation(this.myCarPic, this.x, this.y, this.angle);
   }
 }
-
-// // Car position and speed
-// let carX = 75; // X-AXIS
-// let carY = 75; // Y-AXIS
-// let carSpeed = 0; // Car Speed
-// let carAngle = 0; // Car Angle
-// // Adjustable variables
