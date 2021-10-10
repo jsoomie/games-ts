@@ -31,6 +31,7 @@ class Cars {
           this.angle = -Math.PI / 2;
           this.x = eachCol * Track.WIDTH + Track.WIDTH / 2;
           this.y = eachRow * Track.HEIGHT + Track.HEIGHT / 2;
+          return;
         }
       }
     }
@@ -60,6 +61,8 @@ class Cars {
 
     this.x += Math.cos(this.angle) * this.speed;
     this.y += Math.sin(this.angle) * this.speed;
+
+    carTrackHandling(this);
   }
 
   draw(): void {
