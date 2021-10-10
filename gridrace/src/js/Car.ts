@@ -1,10 +1,3 @@
-// Car position and speed
-let carX = 75; // X-AXIS
-let carY = 75; // Y-AXIS
-let carSpeed = 0; // Car Speed
-let carAngle = 0; // Car Angle
-// Adjustable variables
-
 // Car speed settings
 enum Car {
   GROUNDSPEED_DECAY_MULT = 0.96,
@@ -15,50 +8,98 @@ enum Car {
   MIN_SPEED_TO_TURN = 0.6,
 } // Non-adjustable variables
 
-// CAR RESET
-const carReset = (): void => {
-  for (let eachRow = 0; eachRow < Track.ROWS; eachRow++) {
-    for (let eachCol = 0; eachCol < Track.COLS; eachCol++) {
-      const arrayIndex = rowColToArrayIndex(eachCol, Track.COLS, eachRow);
+class Cars {
+  public x: number;
+  public y: number;
+  public speed: number;
+  public angle: number;
+  public myCarPic?: HTMLImageElement;
+  public keyHeldGas: boolean;
+  public keyHeldReverse: boolean;
+  public keyHeldTurnLeft: boolean;
+  public keyHeldTurnRight: boolean;
+  public controlKeyUp?: string;
+  public controlKeyRight?: string;
+  public controlKeyDown?: string;
+  public controlKeyLeft?: string;
 
-      if (trackGrid[arrayIndex] === TrackGrid.PLAYER_START) {
-        trackGrid[arrayIndex] = TrackGrid.ROAD;
-        carAngle = -Math.PI / 2;
-        carX = eachCol * Track.WIDTH + Track.WIDTH / 2;
-        carY = eachRow * Track.HEIGHT + Track.HEIGHT / 2;
+  constructor() {
+    this.x = 75; // X-AXIS
+    this.y = 75; // Y-AXIS
+    this.speed = 0; // Car Speed
+    this.angle = 0; // Car Angle
+    this.myCarPic;
+
+    this.keyHeldGas = false;
+    this.keyHeldReverse = false;
+    this.keyHeldTurnLeft = false;
+    this.keyHeldTurnRight = false;
+
+    this.controlKeyUp;
+    this.controlKeyRight;
+    this.controlKeyDown;
+    this.controlKeyLeft;
+  }
+
+  setupInput(
+    upKey: string,
+    rightKey: string,
+    downKey: string,
+    leftKey: string
+  ): void {
+    this.controlKeyUp = upKey;
+    this.controlKeyRight = rightKey;
+    this.controlKeyDown = downKey;
+    this.controlKeyLeft = leftKey;
+  }
+
+  reset(image: HTMLImageElement): void {
+    this.myCarPic = image;
+    for (let eachRow = 0; eachRow < Track.ROWS; eachRow++) {
+      for (let eachCol = 0; eachCol < Track.COLS; eachCol++) {
+        const arrayIndex = rowColToArrayIndex(eachCol, Track.COLS, eachRow);
+
+        if (trackGrid[arrayIndex] === TrackGrid.PLAYER_START) {
+          trackGrid[arrayIndex] = TrackGrid.ROAD;
+          this.angle = -Math.PI / 2;
+          this.x = eachCol * Track.WIDTH + Track.WIDTH / 2;
+          this.y = eachRow * Track.HEIGHT + Track.HEIGHT / 2;
+          return;
+        }
       }
     }
   }
-};
 
-// Car movements
-const carMove = (): void => {
-  carSpeed *= Car.GROUNDSPEED_DECAY_MULT;
+  move(): void {
+    this.speed *= Car.GROUNDSPEED_DECAY_MULT;
 
-  if (keyHeldGas) {
-    carSpeed += Car.DRIVE_POWER;
-  }
-  if (keyHeldReverse) {
-    carSpeed -= Car.REVERSE_POWER;
-  }
-  if (Math.abs(carSpeed) > Car.MIN_SPEED_TO_TURN) {
-    if (keyHeldTurnLeft) {
-      if (keyHeldGas && keyHeldTurnLeft) {
-        carAngle -= Car.TURN_RATE * Car.DRIVE_POWER;
-      } else carAngle -= Car.TURN_RATE;
+    if (this.keyHeldGas) {
+      this.speed += Car.DRIVE_POWER;
     }
-    if (keyHeldTurnRight) {
-      if (keyHeldGas && keyHeldTurnRight) {
-        carAngle += Car.TURN_RATE * Car.DRIVE_POWER;
-      } else carAngle += Car.TURN_RATE;
+    if (this.keyHeldReverse) {
+      this.speed -= Car.REVERSE_POWER;
     }
+    if (Math.abs(this.speed) > Car.MIN_SPEED_TO_TURN) {
+      if (this.keyHeldTurnLeft) {
+        if (this.keyHeldGas && this.keyHeldTurnLeft) {
+          this.angle -= Car.TURN_RATE * Car.DRIVE_POWER;
+        } else this.angle -= Car.TURN_RATE;
+      }
+      if (this.keyHeldTurnRight) {
+        if (this.keyHeldGas && this.keyHeldTurnRight) {
+          this.angle += Car.TURN_RATE * Car.DRIVE_POWER;
+        } else this.angle += Car.TURN_RATE;
+      }
+    }
+
+    this.x += Math.cos(this.angle) * this.speed;
+    this.y += Math.sin(this.angle) * this.speed;
+
+    carTrackHandling(this);
   }
 
-  carX += Math.cos(carAngle) * carSpeed;
-  carY += Math.sin(carAngle) * carSpeed;
-};
-
-// Car Picture
-const carDraw = (): void => {
-  drawBitmapCenteredWithRotation(carPic, carX, carY, carAngle);
-};
+  draw(): void {
+    if (this.myCarPic)
+      drawBitmapCenteredWithRotation(this.myCarPic, this.x, this.y, this.angle);
+  }
+}

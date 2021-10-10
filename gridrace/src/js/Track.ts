@@ -17,8 +17,6 @@ enum TrackGrid {
   FLAG,
 }
 
-console.log("hello World");
-
 // prettier-ignore
 const trackGrid = [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  //  1
                     1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,  //  2
@@ -29,7 +27,7 @@ const trackGrid = [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
                     1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1,  //  7
                     1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1,  //  8
                     1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1,  //  9
-                    1, 0, 2, 1, 0, 0, 1, 5, 0, 0, 0, 3, 1, 0, 0, 1, 0, 0, 1, 1,  //  10
+                    1, 2, 2, 1, 0, 0, 1, 5, 0, 0, 0, 3, 1, 0, 0, 1, 0, 0, 1, 1,  //  10
                     1, 3, 3, 1, 0, 0, 1, 0, 0, 0, 0, 3, 1, 0, 0, 1, 0, 0, 1, 1,  //  11
                     1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 5, 0, 0, 1, 1,  //  12
                     1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1,  //  13
@@ -47,9 +45,9 @@ const isWallAtColRow = (col: number, row: number): boolean => {
 };
 
 // how track handles the car
-const carTrackHandling = (): void => {
-  const carTrackCol = Math.floor(carX / Track.WIDTH);
-  const carTrackRow = Math.floor(carY / Track.HEIGHT);
+const carTrackHandling = (car: Cars): void => {
+  const carTrackCol = Math.floor(car.x / Track.WIDTH);
+  const carTrackRow = Math.floor(car.y / Track.HEIGHT);
 
   // CAR ON COLLISION
   const trackIndexUnderCar = rowColToArrayIndex(
@@ -65,7 +63,7 @@ const carTrackHandling = (): void => {
     carTrackRow < Track.ROWS
   ) {
     if (isWallAtColRow(carTrackCol, carTrackRow)) {
-      carSpeed *= Car.BUMP_SPEED_DECREASE;
+      car.speed *= Car.BUMP_SPEED_DECREASE;
     }
   }
 };

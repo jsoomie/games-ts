@@ -4,13 +4,11 @@ enum Key {
   UP = "ArrowUp",
   RIGHT = "ArrowRight",
   DOWN = "ArrowDown",
+  W = "w",
+  A = "a",
+  S = "s",
+  D = "d",
 }
-
-// Held down keys
-let keyHeldGas = false;
-let keyHeldReverse = false;
-let keyHeldTurnLeft = false;
-let keyHeldTurnRight = false;
 
 // Mouse controls
 let mouseX = 0;
@@ -29,52 +27,43 @@ const setupInput = (): void => {
   // Mouse Control
   canvas.addEventListener("mousemove", updateMousePos);
 
+  greenCar.setupInput(Key.W, Key.D, Key.S, Key.A);
+  blueCar.setupInput(Key.UP, Key.RIGHT, Key.DOWN, Key.LEFT);
+
   // Keyboard Controls
   document.addEventListener("keydown", keyPressed);
   document.addEventListener("keyup", keyReleased);
 };
 
-// which key is pressed
-const keyPressed = (e: KeyboardEvent): void => {
+const keySet = (keyEvent: KeyboardEvent, car: Cars, setTo: boolean) => {
   // LEFT KEY
-  if (e.key === Key.LEFT) {
-    keyHeldTurnLeft = true;
+  if (keyEvent.key === car.controlKeyLeft) {
+    car.keyHeldTurnLeft = setTo;
   }
 
   // RIGHT KEY
-  if (e.key === Key.RIGHT) {
-    keyHeldTurnRight = true;
+  if (keyEvent.key === car.controlKeyRight) {
+    car.keyHeldTurnRight = setTo;
   }
 
   // UP KEY
-  if (e.key === Key.UP) {
-    keyHeldGas = true;
+  if (keyEvent.key === car.controlKeyUp) {
+    car.keyHeldGas = setTo;
   }
 
   // DOWN KEY
-  if (e.key === Key.DOWN) {
-    keyHeldReverse = true;
+  if (keyEvent.key === car.controlKeyDown) {
+    car.keyHeldReverse = setTo;
   }
 };
 
+// which key is pressed
+const keyPressed = (e: KeyboardEvent): void => {
+  keySet(e, blueCar, true);
+  keySet(e, greenCar, true);
+};
+
 const keyReleased = (e: KeyboardEvent): void => {
-  // LEFT KEY
-  if (e.key === Key.LEFT) {
-    keyHeldTurnLeft = false;
-  }
-
-  // RIGHT KEY
-  if (e.key === Key.RIGHT) {
-    keyHeldTurnRight = false;
-  }
-
-  // UP KEY
-  if (e.key === Key.UP) {
-    keyHeldGas = false;
-  }
-
-  // DOWN KEY
-  if (e.key === Key.DOWN) {
-    keyHeldReverse = false;
-  }
+  keySet(e, blueCar, false);
+  keySet(e, greenCar, false);
 };
