@@ -1,9 +1,11 @@
 const carPic = document.createElement("img") as HTMLImageElement;
-const roadPic = document.createElement("img") as HTMLImageElement;
-const wallPic = document.createElement("img") as HTMLImageElement;
-const goalPic = document.createElement("img") as HTMLImageElement;
-const treePic = document.createElement("img") as HTMLImageElement;
-const flagPic = document.createElement("img") as HTMLImageElement;
+// const roadPic = document.createElement("img") as HTMLImageElement;
+// const wallPic = document.createElement("img") as HTMLImageElement;
+// const goalPic = document.createElement("img") as HTMLImageElement;
+// const treePic = document.createElement("img") as HTMLImageElement;
+// const flagPic = document.createElement("img") as HTMLImageElement;
+
+let trackPics: HTMLImageElement[] = [];
 
 const imageData = [
   {
@@ -11,23 +13,23 @@ const imageData = [
     fileSrc: "player_car.png",
   },
   {
-    title: roadPic,
+    trackType: TrackGrid.ROAD,
     fileSrc: "track_road.png",
   },
   {
-    title: wallPic,
+    trackType: TrackGrid.WALL,
     fileSrc: "track_wall.png",
   },
   {
-    title: goalPic,
+    trackType: TrackGrid.GOAL,
     fileSrc: "track_goal.png",
   },
   {
-    title: treePic,
+    trackType: TrackGrid.TREE,
     fileSrc: "track_trees.png",
   },
   {
-    title: flagPic,
+    trackType: TrackGrid.FLAG,
     fileSrc: "track_flag.png",
   },
 ];
@@ -36,11 +38,20 @@ let picsToLoad = imageData.length;
 
 const onLoadedLaunch = (): void => {
   imageData.map((data) => {
-    beginLoadingImage(data.title, data.fileSrc);
+    if (data.title !== undefined) {
+      beginLoadingImage(data.title, data.fileSrc);
+    } else {
+      loadingImageForTrackCode(data.trackType, data.fileSrc);
+    }
   });
   if (picsToLoad === 0) {
     imageLoadDone();
   }
+};
+
+const loadingImageForTrackCode = (trackCode: TrackGrid, fileSrc: string) => {
+  trackPics[trackCode] = document.createElement("img");
+  beginLoadingImage(trackPics[trackCode], fileSrc);
 };
 
 const beginLoadingImage = (imgVar: HTMLImageElement, fileName: string) => {

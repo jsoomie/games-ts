@@ -90,35 +90,21 @@ type TrackType = (
 ) => void;
 
 const drawTracks = (): void => {
+  let arrayIndex = 0;
+  let drawTileX = 0;
+  let drawTileY = 0;
+
   for (let eachRow = 0; eachRow < Track.ROWS; eachRow++) {
     for (let eachCol = 0; eachCol < Track.COLS; eachCol++) {
-      const arrayIndex = rowColToArrayIndex(eachCol, Track.COLS, eachRow);
       const tileKind = trackGrid[arrayIndex];
-      let useImage;
+      let useImage = trackPics[tileKind];
 
-      switch (tileKind) {
-        case TrackGrid.ROAD:
-          useImage = roadPic;
-          break;
-        case TrackGrid.WALL:
-          useImage = wallPic;
-          break;
-        case TrackGrid.GOAL:
-          useImage = goalPic;
-          break;
-        case TrackGrid.TREE:
-          useImage = treePic;
-          break;
-        case TrackGrid.FLAG:
-          useImage = flagPic;
-          break;
-      }
+      context.drawImage(useImage as HTMLImageElement, drawTileX, drawTileY);
 
-      context.drawImage(
-        useImage as HTMLImageElement,
-        Track.WIDTH * eachCol,
-        Track.HEIGHT * eachRow
-      );
+      drawTileX += Track.WIDTH;
+      arrayIndex++;
     }
+    drawTileY += Track.HEIGHT;
+    drawTileX = 0;
   }
 };
