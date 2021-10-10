@@ -94,25 +94,7 @@ const drawTracks = (): void => {
     for (let eachCol = 0; eachCol < Track.COLS; eachCol++) {
       const arrayIndex = rowColToArrayIndex(eachCol, Track.COLS, eachRow);
       const tileKind = trackGrid[arrayIndex];
-      let useImage;
-
-      switch (tileKind) {
-        case TrackGrid.ROAD:
-          useImage = roadPic;
-          break;
-        case TrackGrid.WALL:
-          useImage = wallPic;
-          break;
-        case TrackGrid.GOAL:
-          useImage = goalPic;
-          break;
-        case TrackGrid.TREE:
-          useImage = treePic;
-          break;
-        case TrackGrid.FLAG:
-          useImage = flagPic;
-          break;
-      }
+      let useImage = trackPics[tileKind];
 
       context.drawImage(
         useImage as HTMLImageElement,
