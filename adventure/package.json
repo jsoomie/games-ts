@@ -1,0 +1,13 @@
+{
+  "name": "gridrace",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "<jsoomie@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "parcel": "^2.0.0-rc.0"
+  },
+  "scripts": {
+    "start": "yarn parcel index.html"
+  }
+}
