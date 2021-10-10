@@ -12,6 +12,7 @@ enum Car {
   REVERSE_POWER = 0.2,
   TURN_RATE = 0.07,
   BUMP_SPEED_DECREASE = -0.5,
+  MIN_SPEED_TO_TURN = 0.6,
 } // Non-adjustable variables
 
 // CAR RESET
@@ -40,15 +41,17 @@ const carMove = (): void => {
   if (keyHeldReverse) {
     carSpeed -= Car.REVERSE_POWER;
   }
-  if (keyHeldTurnLeft) {
-    if (keyHeldGas && keyHeldTurnLeft) {
-      carAngle -= Car.TURN_RATE * Car.DRIVE_POWER;
-    } else carAngle -= Car.TURN_RATE;
-  }
-  if (keyHeldTurnRight) {
-    if (keyHeldGas && keyHeldTurnRight) {
-      carAngle += Car.TURN_RATE * Car.DRIVE_POWER;
-    } else carAngle += Car.TURN_RATE;
+  if (Math.abs(carSpeed) > Car.MIN_SPEED_TO_TURN) {
+    if (keyHeldTurnLeft) {
+      if (keyHeldGas && keyHeldTurnLeft) {
+        carAngle -= Car.TURN_RATE * Car.DRIVE_POWER;
+      } else carAngle -= Car.TURN_RATE;
+    }
+    if (keyHeldTurnRight) {
+      if (keyHeldGas && keyHeldTurnRight) {
+        carAngle += Car.TURN_RATE * Car.DRIVE_POWER;
+      } else carAngle += Car.TURN_RATE;
+    }
   }
 
   carX += Math.cos(carAngle) * carSpeed;
