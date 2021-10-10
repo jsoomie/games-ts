@@ -56,6 +56,7 @@ class Cars {
   }
 
   reset(): void {
+    this.speed = 0;
     for (let eachRow = 0; eachRow < Track.ROWS; eachRow++) {
       for (let eachCol = 0; eachCol < Track.COLS; eachCol++) {
         const arrayIndex = rowColToArrayIndex(eachCol, Track.COLS, eachRow);
@@ -69,6 +70,7 @@ class Cars {
         }
       }
     }
+    console.log("no player start found");
   }
 
   move(): void {

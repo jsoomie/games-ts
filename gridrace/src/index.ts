@@ -9,10 +9,16 @@ window.onload = (): void => {
   setTimeout(() => loadImages(), 1000);
 };
 
-const imageLoadDone = (): void => {
-  setupInput();
+function loadLevel(level: number[]) {
+  trackGrid = level.slice();
   blueCar.reset();
   greenCar.reset();
+}
+
+const imageLoadDone = (): void => {
+  setupInput();
+
+  loadLevel(startLevel);
 
   const update = (): void => {
     moveAll();
