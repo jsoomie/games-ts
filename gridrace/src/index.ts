@@ -6,7 +6,7 @@ const greenCar = new Cars();
 window.onload = (): void => {
   rectangle(0, 0, canvas.width, canvas.height, "black");
   colorText("LOADING", canvas.width / 2, canvas.height / 2, "white");
-
+  console.log(Key.W);
   setTimeout(() => loadImages(), 1000);
 };
 

@@ -14,6 +14,14 @@ class Cars {
   public speed: number;
   public angle: number;
   public myCarPic?: HTMLImageElement;
+  public keyHeldGas: boolean;
+  public keyHeldReverse: boolean;
+  public keyHeldTurnLeft: boolean;
+  public keyHeldTurnRight: boolean;
+  public controlKeyUp?: string;
+  public controlKeyRight?: string;
+  public controlKeyDown?: string;
+  public controlKeyLeft?: string;
 
   constructor() {
     this.x = 75; // X-AXIS
@@ -21,9 +29,31 @@ class Cars {
     this.speed = 0; // Car Speed
     this.angle = 0; // Car Angle
     this.myCarPic;
+
+    this.keyHeldGas = false;
+    this.keyHeldReverse = false;
+    this.keyHeldTurnLeft = false;
+    this.keyHeldTurnRight = false;
+
+    this.controlKeyUp;
+    this.controlKeyRight;
+    this.controlKeyDown;
+    this.controlKeyLeft;
   }
 
-  reset(image: any): void {
+  setupInput(
+    upKey: string,
+    rightKey: string,
+    downKey: string,
+    leftKey: string
+  ): void {
+    this.controlKeyUp = upKey;
+    this.controlKeyRight = rightKey;
+    this.controlKeyDown = downKey;
+    this.controlKeyLeft = leftKey;
+  }
+
+  reset(image: HTMLImageElement): void {
     this.myCarPic = image;
     for (let eachRow = 0; eachRow < Track.ROWS; eachRow++) {
       for (let eachCol = 0; eachCol < Track.COLS; eachCol++) {
@@ -43,20 +73,20 @@ class Cars {
   move(): void {
     this.speed *= Car.GROUNDSPEED_DECAY_MULT;
 
-    if (keyHeldGas) {
+    if (this.keyHeldGas) {
       this.speed += Car.DRIVE_POWER;
     }
-    if (keyHeldReverse) {
+    if (this.keyHeldReverse) {
       this.speed -= Car.REVERSE_POWER;
     }
     if (Math.abs(this.speed) > Car.MIN_SPEED_TO_TURN) {
-      if (keyHeldTurnLeft) {
-        if (keyHeldGas && keyHeldTurnLeft) {
+      if (this.keyHeldTurnLeft) {
+        if (this.keyHeldGas && this.keyHeldTurnLeft) {
           this.angle -= Car.TURN_RATE * Car.DRIVE_POWER;
         } else this.angle -= Car.TURN_RATE;
       }
-      if (keyHeldTurnRight) {
-        if (keyHeldGas && keyHeldTurnRight) {
+      if (this.keyHeldTurnRight) {
+        if (this.keyHeldGas && this.keyHeldTurnRight) {
           this.angle += Car.TURN_RATE * Car.DRIVE_POWER;
         } else this.angle += Car.TURN_RATE;
       }
