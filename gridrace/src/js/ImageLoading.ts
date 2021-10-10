@@ -24,7 +24,7 @@ const imageData = [
   },
   {
     title: treePic,
-    fileSrc: "track_tree.png",
+    fileSrc: "track_trees.png",
   },
   {
     title: flagPic,
