@@ -18,29 +18,34 @@ enum TrackGrid {
 }
 
 // prettier-ignore
-const trackGrid = [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  //  1
-                    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,  //  2
-                    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,  //  3
-                    1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1,  //  4
-                    1, 0, 0, 5, 1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1, 5, 0, 0, 1, 1,  //  5
-                    1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1,  //  6
-                    1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1,  //  7
-                    1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1,  //  8
-                    1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1,  //  9
-                    1, 2, 2, 1, 0, 0, 1, 5, 0, 0, 0, 3, 1, 0, 0, 1, 0, 0, 1, 1,  //  10
-                    1, 3, 3, 1, 0, 0, 1, 0, 0, 0, 0, 3, 1, 0, 0, 1, 0, 0, 1, 1,  //  11
-                    1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 5, 0, 0, 1, 1,  //  12
-                    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1,  //  13
-                    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1,  //  14
-                    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]; //  15
+const startLevel = [  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  //  1
+                      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,  //  2
+                      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,  //  3
+                      1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1,  //  4
+                      1, 0, 0, 5, 1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1, 5, 0, 0, 1, 1,  //  5
+                      1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1,  //  6
+                      1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1,  //  7
+                      1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1,  //  8
+                      1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1,  //  9
+                      1, 2, 2, 1, 0, 0, 1, 5, 0, 0, 0, 3, 1, 0, 0, 1, 0, 0, 1, 1,  //  10
+                      1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 3, 1, 0, 0, 1, 0, 0, 1, 1,  //  11
+                      1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 5, 0, 0, 1, 1,  //  12
+                      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1,  //  13
+                      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1,  //  14
+                      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]; //  15
+
+let trackGrid: number[] = [];
 
 // See where the tracks row at column and row
-const isWallAtColRow = (col: number, row: number): boolean => {
+const returnTileTypeAtColRow = (
+  col: number,
+  row: number
+): TrackGrid | boolean => {
   if (col >= 0 && col < Track.COLS && row >= 0 && row < Track.ROWS) {
     const trackIndexUnderCoord = rowColToArrayIndex(col, Track.COLS, row);
-    return trackGrid[trackIndexUnderCoord] !== TrackGrid.ROAD;
+    return trackGrid[trackIndexUnderCoord];
   } else {
-    return false;
+    return TrackGrid.WALL;
   }
 };
 
@@ -62,7 +67,12 @@ const carTrackHandling = (car: Cars): void => {
     carTrackRow >= 0 &&
     carTrackRow < Track.ROWS
   ) {
-    if (isWallAtColRow(carTrackCol, carTrackRow)) {
+    const tileHere = returnTileTypeAtColRow(carTrackCol, carTrackRow);
+
+    if (tileHere === TrackGrid.GOAL) {
+      console.log(`${car.name} WINS`);
+      loadLevel(startLevel);
+    } else if (tileHere !== TrackGrid.ROAD) {
       car.speed *= Car.BUMP_SPEED_DECREASE;
     }
   }

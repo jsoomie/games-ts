@@ -1,7 +1,7 @@
 const canvas = document.getElementById("gameCanvas") as HTMLCanvasElement;
 const context = canvas.getContext("2d") as CanvasRenderingContext2D;
-const blueCar = new Cars();
-const greenCar = new Cars();
+const blueCar = new Cars(carPic, "Blue Drop");
+const greenCar = new Cars(otherCarPic, "Green Jade");
 
 window.onload = (): void => {
   rectangle(0, 0, canvas.width, canvas.height, "black");
@@ -9,10 +9,16 @@ window.onload = (): void => {
   setTimeout(() => loadImages(), 1000);
 };
 
+function loadLevel(level: number[]) {
+  trackGrid = level.slice();
+  blueCar.reset();
+  greenCar.reset();
+}
+
 const imageLoadDone = (): void => {
   setupInput();
-  blueCar.reset(carPic);
-  greenCar.reset(otherCarPic);
+
+  loadLevel(startLevel);
 
   const update = (): void => {
     moveAll();

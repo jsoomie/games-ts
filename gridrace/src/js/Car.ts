@@ -22,13 +22,15 @@ class Cars {
   public controlKeyRight?: string;
   public controlKeyDown?: string;
   public controlKeyLeft?: string;
+  public name: string;
 
-  constructor() {
+  constructor(image: HTMLImageElement, name: string) {
     this.x = 75; // X-AXIS
     this.y = 75; // Y-AXIS
     this.speed = 0; // Car Speed
     this.angle = 0; // Car Angle
-    this.myCarPic;
+    this.myCarPic = image;
+    this.name = name;
 
     this.keyHeldGas = false;
     this.keyHeldReverse = false;
@@ -53,8 +55,8 @@ class Cars {
     this.controlKeyLeft = leftKey;
   }
 
-  reset(image: HTMLImageElement): void {
-    this.myCarPic = image;
+  reset(): void {
+    this.speed = 0;
     for (let eachRow = 0; eachRow < Track.ROWS; eachRow++) {
       for (let eachCol = 0; eachCol < Track.COLS; eachCol++) {
         const arrayIndex = rowColToArrayIndex(eachCol, Track.COLS, eachRow);
@@ -68,6 +70,7 @@ class Cars {
         }
       }
     }
+    console.log("no player start found");
   }
 
   move(): void {
